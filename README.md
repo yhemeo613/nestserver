@@ -1,379 +1,251 @@
-# NestJS Microservice Architecture
+# NestJS Microservice Architecture / NestJS 微服务架构
 
-A high-performance, scalable NestJS microservice architecture with MySQL database and Redis cache system.
+[English Documentation](#english-documentation) | [中文文档](#中文文档)
 
-## Features
+---
 
-### Core Architecture
-- **Modular Design**: Separation of core modules, business modules, and common modules
-- **TypeScript**: Full TypeScript support with strict type checking
-- **Dependency Injection**: Leverages NestJS DI system
-- **AOP (Aspect-Oriented Programming)**: Interceptors, guards, and filters
+## <a id="中文文档">中文文档</a>
 
-### Database Layer
-- **TypeORM**: Advanced ORM with MySQL support
-- **Migrations**: Database version control and migration scripts
-- **Seed Data**: Database seeding functionality
-- **Transaction Management**: Database transaction support
-- **Query Optimization**: Optimized queries with caching
+### 📖 简介
 
-### Caching System
-- **Redis Integration**: High-performance caching layer
-- **Cache Strategies**: Configurable TTL and cache policies
-- **Cache Key Management**: Structured cache key organization
-- **Cache Penetration Protection**: Protection against cache penetration
-- **Data Consistency**: Cache-DB consistency mechanisms
+这是一个基于 **NestJS** 的高性能微服务架构模板，集成了 **MySQL** 和 **Redis**。它提供了一套完整的企业级开发最佳实践，包括用户认证、权限管理、任务队列、健康检查、日志记录和监控等功能。
 
-### Third-Party Integrations
+### ✨ 主要特性
 
-#### Authentication & Authorization
-- **Passport.js**: JWT-based authentication
-- **RBAC**: Role-Based Access Control system
-- **Refresh Tokens**: Secure token refresh mechanism
+- **用户认证与授权**: 集成 JWT (Access Token + Refresh Token) 和 RBAC (基于角色的访问控制)。
+- **数据库 ORM**: 使用 TypeORM 管理 MySQL 数据库，支持迁移 (Migration) 和种子数据 (Seeding)。
+- **缓存与锁**: 集成 Redis 缓存，提供分布式锁服务 (`RedisLockService`)。
+- **任务队列**: 使用 Bull 处理异步任务和消息队列。
+- **定时任务**: 支持 Cron 定时任务调度。
+- **安全防护**: 集成 Helmet、Rate Limiting (限流) 和 CORS 配置。
+- **日志系统**: 使用 Winston 实现结构化日志，支持日志轮转。
+- **监控与健康检查**: 集成 Prometheus 指标监控和 Terminus 健康检查。
+- **API 文档**: 自动生成 Swagger/OpenAPI 文档。
+- **容器化**: 提供 Docker 和 Docker Compose 配置，一键启动开发环境。
 
-#### API Documentation
-- **Swagger/OpenAPI**: Auto-generated API documentation
-- **Interactive UI**: Test API endpoints directly
+### 🛠 技术栈
 
-#### Logging
-- **Winston**: Structured logging system
-- **Log Rotation**: Daily log rotation with retention
-- **Multiple Transports**: Console and file logging
+- **框架**: NestJS (Node.js)
+- **语言**: TypeScript
+- **数据库**: MySQL 8.0
+- **缓存/队列**: Redis 7.0
+- **ORM**: TypeORM
+- **包管理**: pnpm
 
-#### Configuration
-- **ConfigModule**: Environment variable management
-- **Type-safe Configuration**: Typed configuration access
+### 📋 前置要求
 
-#### Validation
-- **class-validator**: Request parameter validation
-- **class-transformer**: Data transformation
+- Node.js (v16+)
+- pnpm (推荐) 或 npm
+- MySQL Server
+- Redis Server
 
-#### Task Scheduling
-- **node-schedule**: Cron-based task scheduling
-- **Scheduled Jobs**: Daily, hourly, and custom schedules
+### 🚀 安装与运行
 
-#### Rate Limiting
-- **@nestjs/throttler**: API rate limiting
-- **Configurable Limits**: Customizable rate limits
+#### 1. 克隆项目
 
-#### Message Queue
-- **Bull**: Redis-based job queue
-- **Async Task Processing**: Background job processing
-- **Job Retries**: Automatic retry mechanism
-
-### Architecture Enhancements
-- **RBAC System**: Role and permission management
-- **Distributed Lock**: Redis-based distributed locking
-- **Health Checks**: Application health monitoring
-- **Metrics**: Prometheus metrics integration
-
-### Development Tools
-- **Hot Reload**: Development server with hot reload
-- **Unit Testing**: Jest-based unit testing
-- **Integration Testing**: End-to-end testing
-- **Linting**: ESLint with Prettier
-
-### Deployment
-- **Docker**: Containerized deployment
-- **Docker Compose**: Multi-container orchestration
-- **Health Endpoints**: Health check APIs
-
-## Project Structure
-
-```
-nestjs-microservice-architecture/
-├── src/
-│   ├── common/                 # Common utilities and decorators
-│   │   ├── decorators/         # Custom decorators
-│   │   ├── dto/               # Shared DTOs
-│   │   ├── filters/           # Exception filters
-│   │   ├── interceptors/      # Request/response interceptors
-│   │   └── services/          # Common services (Redis lock, etc.)
-│   ├── config/                # Configuration files
-│   │   └── logger.config.ts   # Winston logger configuration
-│   ├── database/              # Database configurations
-│   │   ├── data-source.ts     # TypeORM data source
-│   │   ├── migrations/        # Database migrations
-│   │   └── seeds/             # Database seeds
-│   ├── modules/               # Feature modules
-│   │   ├── auth/              # Authentication module
-│   │   ├── users/             # User management
-│   │   ├── roles/             # Role management
-│   │   ├── permissions/       # Permission management
-│   │   ├── health/            # Health checks
-│   │   ├── tasks/             # Scheduled tasks
-│   │   └── queue/             # Message queue
-│   ├── app.module.ts          # Root module
-│   ├── app.controller.ts      # Root controller
-│   ├── app.service.ts         # Root service
-│   └── main.ts                # Application entry point
-├── test/                      # Test files
-├── logs/                      # Application logs
-├── .env                       # Environment variables
-├── .env.example               # Environment template
-├── docker-compose.yml         # Docker compose configuration
-├── Dockerfile                 # Docker image configuration
-├── package.json               # Dependencies and scripts
-├── tsconfig.json              # TypeScript configuration
-├── nest-cli.json              # NestJS CLI configuration
-└── jest.config.js             # Jest test configuration
-```
-
-## Installation
-
-### Prerequisites
-- Node.js >= 20.x
-- MySQL >= 8.0
-- Redis >= 7.0
-- Docker (optional)
-
-### Setup
-
-1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd nestjs-microservice-architecture
+cd nest-server
 ```
 
-2. Install dependencies:
+#### 2. 安装依赖
+
 ```bash
-npm install
+pnpm install
 ```
 
-3. Configure environment variables:
+#### 3. 配置环境变量
+
+复制示例配置文件并重命名为 `.env`：
+
 ```bash
 cp .env.example .env
-# Edit .env with your configuration
 ```
 
-4. Start MySQL and Redis (using Docker):
+修改 `.env` 文件中的数据库和 Redis 配置以匹配你的本地环境。
+
+#### 4. 运行数据库迁移和种子数据
+
 ```bash
-docker-compose up -d mysql redis
+# 生成迁移文件（如有修改实体）
+pnpm migration:generate src/database/migrations/NewMigrationName
+
+# 运行迁移
+pnpm migration:run
+
+# 填充初始数据（种子数据）
+pnpm seed
 ```
 
-5. Run database migrations:
+#### 5. 启动应用
+
 ```bash
-npm run migration:run
+# 开发模式
+pnpm start:dev
+
+# 生产模式
+pnpm build
+pnpm start:prod
 ```
 
-6. Start the application:
+### 📚 API 文档
+
+启动应用后，访问以下地址查看 Swagger 文档：
+http://localhost:3000/api/docs
+
+### 🧪 测试
+
 ```bash
-npm run start:dev
+# 单元测试
+pnpm test
+
+# 单元测试 (覆盖率)
+pnpm test:cov
+
+# 端到端测试
+pnpm test:e2e
 ```
 
-## Usage
+### 📂 目录结构
 
-### API Documentation
+```
+src/
+├── common/          # 通用模块 (装饰器, 过滤器, 拦截器, 服务)
+├── config/          # 配置文件
+├── database/        # 数据库相关 (迁移, 种子)
+├── modules/         # 业务模块
+│   ├── auth/        # 认证模块
+│   ├── users/       # 用户模块
+│   ├── roles/       # 角色模块
+│   ├── permissions/ # 权限模块
+│   ├── tasks/       # 定时任务
+│   ├── queue/       # 队列处理
+│   └── health/      # 健康检查
+└── main.ts          # 入口文件
+```
+
+---
+
+## <a id="english-documentation">English Documentation</a>
+
+### 📖 Introduction
+
+This is a high-performance microservice architecture template based on **NestJS**, integrated with **MySQL** and **Redis**. It provides a complete set of enterprise-level best practices, including user authentication, permission management, task queues, health checks, logging, and monitoring.
+
+### ✨ Key Features
+
+- **Authentication & Authorization**: JWT integration (Access Token + Refresh Token) and RBAC (Role-Based Access Control).
+- **Database ORM**: TypeORM for MySQL management, supporting Migrations and Seeding.
+- **Caching & Locking**: Redis cache integration and distributed lock service (`RedisLockService`).
+- **Task Queue**: Asynchronous task processing using Bull.
+- **Scheduled Tasks**: Cron job scheduling support.
+- **Security**: Integrated Helmet, Rate Limiting, and CORS configuration.
+- **Logging**: Structured logging with Winston, supporting log rotation.
+- **Monitoring & Health**: Prometheus metrics and Terminus health checks.
+- **API Documentation**: Auto-generated Swagger/OpenAPI documentation.
+- **Containerization**: Docker and Docker Compose configuration for easy setup.
+
+### 🛠 Tech Stack
+
+- **Framework**: NestJS (Node.js)
+- **Language**: TypeScript
+- **Database**: MySQL 8.0
+- **Cache/Queue**: Redis 7.0
+- **ORM**: TypeORM
+- **Package Manager**: pnpm
+
+### 📋 Prerequisites
+
+- Node.js (v16+)
+- pnpm (recommended) or npm
+- MySQL Server
+- Redis Server
+
+### 🚀 Installation & Running
+
+#### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd nest-server
+```
+
+#### 2. Install dependencies
+
+```bash
+pnpm install
+```
+
+#### 3. Configure Environment Variables
+
+Copy the example configuration file to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file to match your local MySQL and Redis configuration.
+
+#### 4. Run Migrations and Seeds
+
+```bash
+# Generate migration (if entities changed)
+pnpm migration:generate src/database/migrations/NewMigrationName
+
+# Run migrations
+pnpm migration:run
+
+# Seed initial data
+pnpm seed
+```
+
+#### 5. Start the Application
+
+```bash
+# Development mode
+pnpm start:dev
+
+# Production mode
+pnpm build
+pnpm start:prod
+```
+
+### 📚 API Documentation
+
 Once the application is running, access the Swagger documentation at:
-```
-http://localhost:3000/api/v1/docs
-```
+http://localhost:3000/api/docs
 
-### Health Check
-Check application health:
+### 🧪 Testing
+
 ```bash
-curl http://localhost:3000/api/v1/health
+# Unit tests
+pnpm test
+
+# Unit tests (coverage)
+pnpm test:cov
+
+# E2E tests
+pnpm test:e2e
 ```
 
-### Authentication
+### 📂 Directory Structure
 
-#### Register
-```bash
-curl -X POST http://localhost:3000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "john_doe",
-    "email": "john@example.com",
-    "password": "password123"
-  }'
+```
+src/
+├── common/          # Common modules (Decorators, Filters, Interceptors, Services)
+├── config/          # Configurations
+├── database/        # Database related (Migrations, Seeds)
+├── modules/         # Business Modules
+│   ├── auth/        # Authentication
+│   ├── users/       # User Management
+│   ├── roles/       # Role Management
+│   ├── permissions/ # Permission Management
+│   ├── tasks/       # Scheduled Tasks
+│   ├── queue/       # Queue Processing
+│   └── health/      # Health Checks
+└── main.ts          # Entry Point
 ```
 
-#### Login
-```bash
-curl -X POST http://localhost:3000/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "john@example.com",
-    "password": "password123"
-  }'
-```
+## 📄 License
 
-#### Access Protected Routes
-```bash
-curl -X GET http://localhost:3000/api/v1/users \
-  -H "Authorization: Bearer <your-access-token>"
-```
-
-## Available Scripts
-
-- `npm run build` - Build the application
-- `npm run format` - Format code with Prettier
-- `npm run start` - Start the application in production mode
-- `npm run start:dev` - Start the application in development mode with hot reload
-- `npm run start:debug` - Start the application in debug mode
-- `npm run lint` - Run ESLint
-- `npm run test` - Run unit tests
-- `npm run test:e2e` - Run end-to-end tests
-- `npm run test:cov` - Run tests with coverage
-- `npm run migration:generate` - Generate a new migration
-- `npm run migration:run` - Run pending migrations
-- `npm run migration:revert` - Revert the last migration
-- `npm run seed` - Run database seeds
-
-## Database Migrations
-
-### Create a Migration
-```bash
-npm run typeorm -- migration:create -n MigrationName
-```
-
-### Generate Migration from Entity Changes
-```bash
-npm run migration:generate
-```
-
-### Run Migrations
-```bash
-npm run migration:run
-```
-
-### Revert Migration
-```bash
-npm run migration:revert
-```
-
-## Docker Deployment
-
-### Build and Start All Services
-```bash
-docker-compose up -d
-```
-
-### Stop All Services
-```bash
-docker-compose down
-```
-
-### View Logs
-```bash
-docker-compose logs -f app
-```
-
-## Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| NODE_ENV | Application environment | development |
-| PORT | Server port | 3000 |
-| API_PREFIX | API route prefix | api/v1 |
-| DB_HOST | Database host | localhost |
-| DB_PORT | Database port | 3306 |
-| DB_USERNAME | Database username | root |
-| DB_PASSWORD | Database password | password |
-| DB_DATABASE | Database name | nestjs_microservice |
-| REDIS_HOST | Redis host | localhost |
-| REDIS_PORT | Redis port | 6379 |
-| JWT_SECRET | JWT secret key | - |
-| JWT_EXPIRES_IN | JWT expiration time | 1d |
-| JWT_REFRESH_SECRET | Refresh token secret | - |
-| JWT_REFRESH_EXPIRES_IN | Refresh token expiration | 7d |
-| THROTTLE_TTL | Rate limit TTL (seconds) | 60 |
-| THROTTLE_LIMIT | Rate limit count | 100 |
-
-## Architecture Highlights
-
-### Modular Design
-The application follows a modular architecture where each feature is encapsulated in its own module. This promotes:
-- Separation of concerns
-- Reusability
-- Maintainability
-- Scalability
-
-### RBAC System
-Role-Based Access Control provides:
-- User management
-- Role assignment
-- Permission management
-- Fine-grained access control
-
-### Caching Strategy
-Multi-layer caching with:
-- Redis as the cache store
-- Configurable TTL
-- Cache invalidation on updates
-- Cache penetration protection
-
-### Message Queue
-Asynchronous task processing with:
-- Multiple queue types (email, notification, cleanup)
-- Job retries with exponential backoff
-- Job monitoring and statistics
-- Dead letter queue support
-
-## Testing
-
-### Unit Tests
-```bash
-npm run test
-```
-
-### Integration Tests
-```bash
-npm run test:e2e
-```
-
-### Test Coverage
-```bash
-npm run test:cov
-```
-
-## Monitoring
-
-### Health Endpoints
-- `/api/v1/health` - Overall health check
-- `/api/v1/health/cache` - Cache health check
-
-### Metrics
-Prometheus metrics are available at:
-```
-http://localhost:3000/metrics
-```
-
-## Security Features
-
-- JWT-based authentication
-- Password hashing with bcrypt
-- Rate limiting
-- CORS configuration
-- Helmet security headers
-- Input validation with class-validator
-- SQL injection prevention (TypeORM)
-- XSS protection
-
-## Performance Optimization
-
-- Database query optimization
-- Redis caching layer
-- Connection pooling
-- Lazy loading
-- Response compression
-- Static asset serving
-
-## Best Practices
-
-This project follows NestJS best practices:
-- Dependency injection
-- Modular architecture
-- Separation of concerns
-- SOLID principles
-- Clean code
-- Comprehensive testing
-- Documentation
-
-## License
-
-MIT
-
-## Support
-
-For issues and questions, please open an issue on the repository.
+This project is licensed under the MIT License.
